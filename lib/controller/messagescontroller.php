@@ -184,6 +184,10 @@ class MessagesController extends Controller {
 				$htmlResponse->setContentSecurityPolicy($policy);
 			}
 
+			// Enable caching
+			$htmlResponse->cacheFor(60 * 60);
+			$htmlResponse->addHeader('Pragma', 'cache');
+
 			return $htmlResponse;
 		} catch(\Exception $ex) {
 			return new TemplateResponse($this->appName, 'error', ['message' => $ex->getMessage()], 'none');
