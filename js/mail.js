@@ -1311,8 +1311,8 @@ $(document).ready(function() {
 	* Check for changes in message bodies every second.
 	*/
 	setInterval((function() {
-			// Begin the loop.
-			return function() {
+		// Begin the loop.
+		return function() {
 
 			// Define which elements hold the message body.
 			var newMessageBody = $('#new-message-body');
