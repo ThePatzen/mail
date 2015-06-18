@@ -1306,6 +1306,45 @@ $(document).ready(function() {
 	$(document).on('change input paste keyup', '.reply-message-fields #to', Mail.UI.toggleReplyButton);
 	$(document).on('change input paste keyup', '.reply-message-body', Mail.UI.toggleReplyButton);
 
+	/**
+	* Detects pasted text by browser plugins, and other software.
+	* Check for changes in message bodies every second.
+	*/
+	setInterval((function() {
+			// Begin the loop.
+			return function() {
+
+			// Define which elements hold the message body.
+			var newMessageBody = $('#new-message-body');
+			var replyMessageBody = $('.reply-message-body');
+
+			/**
+			 * If the message body is displayed and has content:
+			 * Prepare the message body content for processing.
+			 * If there is new message body content to process:
+			 * Resize the text area.
+			 * Toggle the send button, based on whether the message is ready or not.
+			 * Prepare the new message body content for future processing.
+			 */
+			if (newMessageBody.val()) {
+				var newMessageBodyOld, newMessageBodyContent = newMessageBody.val();
+				if (newMessageBodyContent !== newMessageBodyOld) {
+					newMessageBody.trigger('autosize.resize');
+					Mail.UI.toggleSendButton();
+					newMessageBodyOld = newMessageBodyContent;
+				}
+			}
+			if (replyMessageBody.val()) {
+				var replyMessageBodyOld, replyMessageBodyContent = replyMessageBody.val();
+				if (replyMessageBodyContent !== replyMessageBodyOld) {
+					replyMessageBody.trigger('autosize.resize');
+					Mail.UI.toggleReplyButton();
+					replyMessageBodyOld = replyMessageBodyContent;
+				}
+			}
+		};
+	})(), 1000);
+
 	$(document).on('click', '#mail-message .attachment-save-to-cloud', function(event) {
 		event.stopPropagation();
 		var messageId = $(this).parent().data('messageId');
